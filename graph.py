@@ -8,7 +8,7 @@ from collections import defaultdict
 # en key le nom des champs, en value une liste qui comporte le score attribue, et l'index correspondant a la position du champs dans le  csv
 
 infos =	 {
-	'id': [0, 0], 'gender': [0, 0], 'age': [40, 0], 'field_cd': [40, 0], 'undergra': [30, 0 ], 'imprace': [70, 0],
+	'id': [0, 0], 'gender': [-10000, 0], 'age': [40, 0], 'field_cd': [40, 0], 'undergra': [30, 0 ], 'imprace': [70, 0],
     'imprelig': [70, 0], 'from': [40, 0], 'zipcode': [20, 0], 'income': [40, 0], 'goal': [80, 0], 'date': [30, 0], 'go_out': [30, 0],
     'career_c' : [40, 0] , 'sport': [60, 0], 'tvsports': [30, 0], 'excercise': [50, 0], 'dining': [50, 0], 'museums': [30, 0], 'art': [40, 0],
     'hiking': [20, 0], 'gaming': [30, 0], 'clubbing': [40, 0], 'reading': [20, 0], 'tv': [30, 0], 'theater': [20, 0], 'movies': [20, 0],
