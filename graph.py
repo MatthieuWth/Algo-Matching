@@ -39,35 +39,85 @@ def setField(line, Id):
 		candidate_list[key] = tab[value[index]]
 	return candidate_list
 
+
+#
+#	Loop on all existing people and calcul the affinity of two people
+#	depending on if they have enough things in common or not.
+#
 def FindMatch(candidate_dict):
-	i = 0
 	y = 0
-	count = 0
+	love_score = 0
 	total = 0
-	cpt = 0
-	print len(candidate_dict), "--"
-	print '________________________________________________'
+	number_matchs = 0
 
-	for keys, value in candidate_dict.iteritems():
-		for keys_, value_ in candidate_dict.iteritems():
-			if (keys != keys_):
+	stop = 0
+
+	for keys in candidate_dict.iteritems():
+		candidate_dict[str(keys[0])]["matchs"] = []
+		for keys_ in candidate_dict.iteritems():
+			if (keys[0] != keys_[0]):
 				y = 0
-				for x in value:
-					if (value[x] == value_[x]):
-						count += infos[x][index]
+				for value in infos.iteritems():
+
+					# Condition of the matchs
+					# Special condition have been made for Age and Income.
+					if (keys_[1][value[0]] != "" and keys[1][value[0]] != "" and value[0] == "age" and int(keys_[1][value[0]]) >= int(keys[1][value[0]]) - 5 and int(keys_[1][value[0]]) <= int(keys[1][value[0]]) + 5):
+						love_score += infos[value[0]][index]
+					elif (keys_[1][value[0]] != "" and keys[1][value[0]] != "" and value[0] == "income" and int(keys_[1][value[0]]) >= int(keys[1][value[0]]) - 2000 and int(keys_[1][value[0]]) <= int(keys[1][value[0]]) + 2000):
+						love_score += infos[value[0]][index]
+					elif (keys[1][value[0]] == keys_[1][value[0]]):
+						love_score += infos[value[0]][index]
 					y += 1
-					total += count
-				if count > 350:
-					print "count ==", count
-					print value["matchs"][1]
+					total += love_score
+				# Love score is the love panel to reach in order to match someone.
+				if love_score > 845:
+					number_matchs += 1
+					new_node = [keys_, love_score]
+					candidate_dict[str(keys[0])]["matchs"].append(new_node)
+				love_score = 0
+		print "Affinites trouvees pour le user", keys[0], " with ", number_matchs, " matchs"
+		number_matchs = 0
+		stop += 1
+		# Stop when 400 profile are checked, you can change this condition in order to have more people to analyze.
+		if stop == 400:
+			break
 
-					#device_list.setdefault(location,[]).append(device)
-					keys["matchs"][0].append(keys_)
-				count = 0
-				cpt +=1
-	print "total = ", (total / cpt)
+
+#
+#	Check that the match of the people is also in his match list.
+#
+def check_affinity(Id, curr):
+	for x in candidate_dict[curr]["matchs"]:
+		if (x[0][0] == Id):
+			return 1
+
+#
+#	Get a list of best match of a profile.
+#
+def findBestMatch(Id):
+	list_match = []
+	for curr in candidate_dict[Id]["matchs"]:
+		if (isinstance(curr, str)):
+			continue
+		else:
+			list_match.append(curr[1])
+	list_match.append(23)
+	sorted(list_match, reverse=True)
+
+#
+#	Find best matchs of a profile.
+#
+def isThereLove(candidate_dict):
+	for keys in candidate_dict.iteritems():
+		for curr in candidate_dict[str(keys[0])]["matchs"]:
+			if (curr[0][0] > str(0) and check_affinity(keys[0], curr[0][0])):
+				findBestMatch(keys[0])
+				continue
 
 
+#
+#	Get fields of the first line in data.csv
+#
 def getField(line):
 	i = 0
 	print 'line = ', line
@@ -81,6 +131,10 @@ def getField(line):
 
 Id = 0
 
+
+#
+#	First part of the code executed. Open data.csv and launch the algorithme.
+#
 with open('data.csv', 'rb') as csvfile:
 	data = csv.reader(csvfile, delimiter=',')
 	for line in data:
@@ -91,8 +145,4 @@ with open('data.csv', 'rb') as csvfile:
 			#print candidate_dict
 		Id += 1
 	FindMatch(candidate_dict)
-
-toto = 0
-for keys , number in candidate_dict.iteritems():
-	#print keys
-	toto += 1
+	isThereLove(candidate_dict)
