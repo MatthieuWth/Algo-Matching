@@ -1,5 +1,4 @@
 import csv
-from collections import defaultdict
 
 # no gay here, gender eliminaatory
 
@@ -13,7 +12,7 @@ infos =	 {
     'career_c' : [40, 0] , 'sport': [60, 0], 'tvsports': [30, 0], 'excercise': [50, 0], 'dining': [50, 0], 'museums': [30, 0], 'art': [40, 0],
     'hiking': [20, 0], 'gaming': [30, 0], 'clubbing': [40, 0], 'reading': [20, 0], 'tv': [30, 0], 'theater': [20, 0], 'movies': [20, 0],
     'concerts': [30, 0], 'music': [40, 0], 'shopping': [30, 0], 'yoga': [20, 0], 'exphappy': [60, 0], 'expnum': [90, 0],
-    'match_es': [30, 0], 'length' : [20, 0], 'matchs' : [[], 0]
+    'match_es': [30, 0], 'length' : [20, 0], 'matchs' : []
 	}
 
 # simplement pour acceder plus lisiblement a la 1 ere et 2 eme dimension de notre liste contenue dans infos.
@@ -22,7 +21,7 @@ index = 1
 
 matching_minimum_score = 300
 
-candidate_dict = defaultdict()
+candidate_dict = {}
 #
 
 # check if the field already exists if not it create an ID related to the field.
@@ -59,10 +58,6 @@ def FindMatch(candidate_dict):
 					total += count
 				if count > 350:
 					print "count ==", count
-					print value["matchs"][1]
-
-					#device_list.setdefault(location,[]).append(device)
-					keys["matchs"][0].append(keys_)
 				count = 0
 				cpt +=1
 	print "total = ", (total / cpt)
