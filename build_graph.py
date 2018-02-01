@@ -51,8 +51,10 @@ def FindMatch(candidate_dict):
 	number_matchs = 0
 
 	stop = 0
+	result = open("result.csv","w")
 
 	for keys in candidate_dict.iteritems():
+		line = ""
 		candidate_dict[str(keys[0])]["matchs"] = []
 		for keys_ in candidate_dict.iteritems():
 			if (keys[0] != keys_[0]):
@@ -75,12 +77,17 @@ def FindMatch(candidate_dict):
 					new_node = [keys_, love_score]
 					candidate_dict[str(keys[0])]["matchs"].append(new_node)
 				love_score = 0
-		print "Affinites trouvees pour le user", keys[0], " with ", number_matchs, " matchs"
+		line = keys[0] + ";"
+		for matchs in candidate_dict[str(keys[0])]["matchs"]:
+			line +=  matchs[0][0] + ","
+		result.write(line)
+		result.write("\n")
 		number_matchs = 0
 		stop += 1
 		# Stop when 400 profile are checked, you can change this condition in order to have more people to analyze.
 		if stop == 400:
 			break
+	result.close()
 
 
 #
@@ -120,14 +127,11 @@ def isThereLove(candidate_dict):
 #
 def getField(line):
 	i = 0
-	print 'line = ', line
 	for field in line:
 		for keys , number in infos.items():
 				if field == keys:
 					infos[field][index] = i
-					print field, "---", infos[field][index]
 		i += 1
-	print infos
 
 Id = 0
 
