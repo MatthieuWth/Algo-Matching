@@ -85,7 +85,7 @@ def FindMatch(candidate_dict):
 		number_matchs = 0
 		stop += 1
 		# Stop when 400 profile are checked, you can change this condition in order to have more people to analyze.
-		if stop == 400:
+		if stop > 400:
 			break
 	result.close()
 
